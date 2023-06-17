@@ -21,7 +21,7 @@ export class User {
     @Prop()
     img:string;
 
-    @Prop()
+    @Prop({default:true})
     state:boolean;
 
 }
