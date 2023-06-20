@@ -10,8 +10,8 @@ export class UserService {
 
     constructor(@InjectModel(User.name) private userModel:Model<User>, private encryptionService:EncryptionService){}
 
-    async getUserTest(){
-        return "Get user test";
+    async getUserByID(id:string){
+        return await this.userModel.findById(id);
     }
 
     async createNewUser(userDTO:UserDTO){
@@ -19,4 +19,9 @@ export class UserService {
         const createdUser = await this.userModel.create(userDTO)
         return await createdUser.save();
     }
+
+
+    
+
+
 }

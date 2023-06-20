@@ -1,4 +1,5 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Param } from '@nestjs/common';
+import { IsMongoId } from 'class-validator';
 import { UserDTO } from 'src/dto/user.dto';
 import { UserService } from 'src/services/user/user.service';
 
@@ -7,9 +8,10 @@ export class UserController {
 
     constructor(private userService:UserService){}
 
-    @Get()
-    async getUser(){
-        return this.userService.getUserTest();
+    @Get('/:id')
+    @IsMongoId({message:'Is not a mongo id'})
+    async getUser(@Param('id') id:string){
+        return this.userService.getUserByID(id);
     }
 
     @Post()
