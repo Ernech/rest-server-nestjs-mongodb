@@ -14,11 +14,17 @@ export class UserService {
         return await this.userModel.findOne({_id:id,state:true});
     }
 
+    async getAllUsers(){
+        return await this.userModel.find({state:true})
+    }
+
     async createNewUser(userDTO:UserDTO){
         userDTO.password = await this.encryptionService.generatePassowd(userDTO.password);
         const createdUser = await this.userModel.create(userDTO);
         return await createdUser.save();
     }
+
+
 
     async editUser(id:string, userDTO:UserDTO){
 
@@ -31,7 +37,13 @@ export class UserService {
     }
 
 
-    
+    async deleteUser(id:string){
+        const deletedUser = await this.userModel.findByIdAndUpdate(id, {state:false},{new:true});
+        if(!deletedUser){
+            throw new NotFoundException(`Sorry, the user with the id ${id} does'n exists`)
+        }
+        return deletedUser;
+    }
 
 
 }

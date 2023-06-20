@@ -1,5 +1,4 @@
-import { Body, Controller, Get, Post, Param, Put } from '@nestjs/common';
-import { IsMongoId } from 'class-validator';
+import { Body, Controller, Get, Post, Param, Put, Delete } from '@nestjs/common';
 import { UserDTO } from 'src/dto/user.dto';
 import { UserService } from 'src/services/user/user.service';
 
@@ -19,8 +18,13 @@ export class UserController {
     }
 
     @Put('/:id')
-    async editUser(@Param('id') id:string, @Body() userDTO:UserDTO){
+    async editUser(@Param('id')  id:string, @Body() userDTO:UserDTO){
             return this.userService.editUser(id,userDTO);
+    }
+
+    @Delete('/:id')
+    async deleteUser(@Param('id') id:string){
+        return this.userService.deleteUser(id);
     }
 
 }
