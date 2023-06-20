@@ -1,4 +1,5 @@
-import { Body, Controller, Get, Post, Param, Put, Delete } from '@nestjs/common';
+import { Body, Controller, Get, Post, Param, Put, Delete, Query } from '@nestjs/common';
+
 import { UserDTO } from 'src/dto/user.dto';
 import { UserService } from 'src/services/user/user.service';
 
@@ -6,6 +7,11 @@ import { UserService } from 'src/services/user/user.service';
 export class UserController {
 
     constructor(private userService:UserService){}
+
+    @Get()
+    async getUsers(@Query('page') page:number=0, @Query('limit') limit:number=5){
+        return this.userService.getUsers(page,limit);
+    }
 
     @Get('/:id')
     async getUser(@Param('id') id:string){
