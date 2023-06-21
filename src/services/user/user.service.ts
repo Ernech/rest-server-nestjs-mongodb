@@ -14,6 +14,11 @@ export class UserService {
         return await this.userModel.findOne({_id:id,state:true});
     }
 
+    async getUserByEmail(email:string){
+        
+        return await this.userModel.findOne({email,state:true})
+    }
+
     async getUsers(page:number, limit:number){
         return await this.userModel.find({state:true}).skip(page).limit(limit).exec();
     }

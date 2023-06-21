@@ -6,14 +6,14 @@ require('dotenv').config()
 export class TokenService {
 
     generateToken(id:string, role:string){
-        const prievateKey = process.env.PRIVATE_KEY
+        const privateKey = process.env.PRIVATE_KEY
         const now = Math.floor(Date.now() / 1000);
         const payload={
             role,
             id,
             iat: now,
         }
-        return jwt.sign(prievateKey,payload,{expiresIn:'3h'})
+        return jwt.sign(payload,privateKey,{expiresIn:'3h'})
     }
     
 
