@@ -5,8 +5,9 @@ import { DatabaseModule } from './database/database.module';
 import { ServicesModule } from './services/services.module';
 import { ControllersModule } from './controllers/controllers.module';
 import { ConfigModule } from '@nestjs/config';
+import { GuardsModule } from './guards/guards.module';
 @Module({
-  imports: [DatabaseModule, ServicesModule, ControllersModule, ConfigModule.forRoot({isGlobal:true})],
+  imports: [DatabaseModule, ServicesModule, ControllersModule, ConfigModule.forRoot({isGlobal:true}), GuardsModule],
   controllers: [AppController],
   providers: [AppService],
 })
