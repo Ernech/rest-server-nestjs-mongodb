@@ -14,7 +14,7 @@ export class Category{
     @Prop({default:true})
     status:boolean;
 
-    @Prop({type:mongoose.Schema.Types.ObjectId,ref:'User'})
+    @Prop({type:mongoose.Schema.Types.ObjectId,ref:'User',required:true})
     user:User;
 
 }
