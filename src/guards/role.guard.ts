@@ -10,21 +10,18 @@ export class RoleGuard implements CanActivate {
 
   canActivate(context: ExecutionContext): boolean {
     const roles = this._reflector.getAllAndOverride<RoleType>('roles', [context.getHandler(), context.getClass()])
-
     if (!roles) {
-      return true
+      return true;
     }
-
     const request = context.switchToHttp().getRequest();
     const token = request.headers.authorization;
-
-    if (!token) {
-      throw new UnauthorizedException("You don't have permission to access to this resource")
-    }
-
-    const role = this.tokenService.getRoles(token)
-    const hasRole = () => roles.includes(role)
     
-    return hasRole()
+    if (!token) {
+      throw new UnauthorizedException("You don't have permission to access to this resource");
+    }
+    const role = this.tokenService.getRoles(token);
+    const hasRole = () => roles.includes(role);
+    
+    return hasRole();
   }
 }

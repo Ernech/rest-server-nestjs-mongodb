@@ -1,6 +1,9 @@
 import { Body, Controller, Get, Post, Param, Put, Delete, Query } from '@nestjs/common';
+import { Authroization } from 'src/decorators/auth.decorator';
+import { Roles } from 'src/decorators/roles.decorator';
 
 import { UserDTO } from 'src/dto/user.dto';
+import { RoleType } from 'src/enums/role-type.enum';
 import { UserService } from 'src/services/user/user.service';
 
 @Controller('user')
@@ -29,6 +32,7 @@ export class UserController {
     }
 
     @Delete('/:id')
+    @Roles(RoleType.ADMIN)
     async deleteUser(@Param('id') id:string){
         return this.userService.deleteUser(id);
     }

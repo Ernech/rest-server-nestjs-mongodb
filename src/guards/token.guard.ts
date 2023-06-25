@@ -34,7 +34,7 @@ export class TokenGuard implements CanActivate {
           return true
         }
       } catch (error) {
-        throw new UnauthorizedException('Token invalid or expired')
+        throw new UnauthorizedException('Token invalid or expired.')
       }
    }
   }
