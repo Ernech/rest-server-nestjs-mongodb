@@ -2,6 +2,7 @@ import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from
 import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
 import { TokenService } from '../services/token/token.service';
+import { UserService } from 'src/services/user/user.service';
 @Injectable()
 export class TokenGuard implements CanActivate {
 
@@ -31,11 +32,11 @@ export class TokenGuard implements CanActivate {
       try {
         const validateToken = this.tokenService.validateToken(auth[1])
         if(validateToken){
-          return true
+          return true;
         }
       } catch (error) {
         console.log(error);
-        throw new UnauthorizedException('Token invalid or expired.')
+        throw new UnauthorizedException('Token invalid or expired.');
       }
    }
   }

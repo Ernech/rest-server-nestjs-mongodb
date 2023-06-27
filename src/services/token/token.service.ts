@@ -15,10 +15,15 @@ export class TokenService {
         }
         return jwt.sign(payload,privateKey,{expiresIn:'3h'})
     }
-    getRoles(token:String){
+    getRoles(token:string){
         const tokenArray = token.split(' ');
         const {role} = this.validateToken(tokenArray[1])
         return role;
+    }
+    getUserID(token:string){
+        const tokenArray = token.split(' ');
+        const {id} = this.validateToken(tokenArray[1])
+        return id;
     }
     validateToken(token:string){
         return jwt.verify(token, process.env.PRIVATE_KEY)
