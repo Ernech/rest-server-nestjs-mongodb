@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Headers, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Param, Post, Put, Query, Delete } from '@nestjs/common';
 import { Authroization } from 'src/decorators/auth.decorator';
 import { Roles } from 'src/decorators/roles.decorator';
 import { CategoryDTO } from 'src/dto/category.dto';
@@ -23,12 +23,11 @@ export class CategoryController {
 
     @Put('/:id')
     async updateCategory(@Param('id') id:string, @Body() categoryDTO:CategoryDTO, @Headers() headers){
-
         return this.categoryService.updateCategory(id,categoryDTO,headers);
-
-
     }
 
-    
-
+    @Delete('/:id')
+    async deleteCategory(@Param('id') id:string){
+        return this.categoryService.deleteCategory(id);
+    }
 }

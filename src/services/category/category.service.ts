@@ -46,4 +46,9 @@ export class CategoryService {
         return newCategory;
     }
 
+    async deleteCategory(categoryId:string){
+        const categoryDeleted = await this.categoryModel.findByIdAndUpdate(categoryId,{status:false},{new:true});
+        return categoryDeleted;
+    }
+
 }
