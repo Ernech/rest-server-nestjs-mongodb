@@ -7,10 +7,18 @@ import { TokenService } from './token/token.service';
 import { AuthService } from './auth/auth.service';
 import { CategoryService } from './category/category.service';
 import { Category, CategorySchema } from 'src/schema/category.schema';
+import { ProductService } from './product/product.service';
+import { Product, ProductSchema } from 'src/schema/product.schema';
 
 @Module({
-  imports:[MongooseModule.forFeature([{name:User.name, schema:UserSchema},{name:Category.name, schema:CategorySchema}])],
-  providers:[UserService, EncryptionService, TokenService, AuthService, CategoryService],
-  exports:[UserService, AuthService, CategoryService, TokenService]
+  imports:[MongooseModule.forFeature(
+    [
+      {name:User.name, schema:UserSchema},
+      {name:Category.name, schema:CategorySchema},
+      {name:Product.name,schema:ProductSchema}
+    ]
+    )],
+  providers:[UserService, EncryptionService, TokenService, AuthService, CategoryService, ProductService],
+  exports:[UserService, AuthService, CategoryService, TokenService, ProductService]
 })
 export class ServicesModule {}
