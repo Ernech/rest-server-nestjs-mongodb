@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ProductDTO } from 'src/dto/product.dto';
@@ -13,6 +13,19 @@ export class ProductService {
                 private tokenService:TokenService,
                 private userService:UserService){}
 
+    
+    async getProductById(productId:string){
+        const product = await this.productRepository.findOne({_id:productId,status:true});
+        if(!product) throw new BadRequestException(`The product with the id ${productId} doesn't exists`);
+        return product;
+    }
+
+
+    async getProducts(limit:number, skip:number){
+        const prodcuts = await this.productRepository.find({status:true}).skip(skip).limit(limit);
+        return prodcuts;
+    }
+
     async createProduct(productDTO:ProductDTO, headers: { authorization: any; }){
         const token = headers.authorization;
         const uid = this.tokenService.getUserID(token);
@@ -20,5 +33,14 @@ export class ProductService {
         const newProduct = await this.productRepository.create({...productDTO,user:user._id});
         return await newProduct.save();
     }
+
+
+    async deleteProduct(productId:string){
+        const product = await this.productRepository.findByIdAndUpdate(productId,{status:false},{new:true})
+        return product;
+
+    }
+
+    
 
 }
