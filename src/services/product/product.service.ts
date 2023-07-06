@@ -34,11 +34,18 @@ export class ProductService {
         return await newProduct.save();
     }
 
+    async updateProduct(productId:string, productDTO:ProductDTO,headers:{authorization:any}){
+        const token = headers.authorization;
+        const uid = this.tokenService.getUserID(token);
+        const user = await this.userService.getUserByID(uid);
+        const updatedCategory = await this.productRepository.findByIdAndUpdate(productId,{...productDTO,user:user._id},{new:true});
+        if(!updatedCategory) throw new BadRequestException(`The product with the id: ${productId} doesn't exists`);
+        return updatedCategory;
+    }
 
     async deleteProduct(productId:string){
         const product = await this.productRepository.findByIdAndUpdate(productId,{status:false},{new:true})
         return product;
-
     }
 
     
