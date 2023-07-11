@@ -20,6 +20,6 @@ import { SearchService } from './search/search.service';
     ]
     )],
   providers:[UserService, EncryptionService, TokenService, AuthService, CategoryService, ProductService, SearchService],
-  exports:[UserService, AuthService, CategoryService, TokenService, ProductService]
+  exports:[UserService, AuthService, CategoryService, TokenService, ProductService, SearchService]
 })
 export class ServicesModule {}
