@@ -5,6 +5,8 @@ import { Category } from 'src/schema/category.schema';
 import { Product } from 'src/schema/product.schema';
 import { User } from 'src/schema/user.schema';
 import { UserService } from '../user/user.service';
+import { ProductService } from '../product/product.service';
+import { CategoryService } from '../category/category.service';
 
 @Injectable()
 export class SearchService {
@@ -12,7 +14,9 @@ export class SearchService {
     constructor(@InjectModel(Category.name) private categoryRepository:Model<Category>,
     @InjectModel(Product.name) private productRepository:Model<Product>,
     @InjectModel(User.name) private userRepository:Model<User>,
-    private userService:UserService){}
+    private userService:UserService,
+    private productService:ProductService,
+    private categoryService:CategoryService){}
     
     
      async search(collection:string,query:string){
@@ -27,9 +31,9 @@ export class SearchService {
                     return this.searchUser(query);
                 
             case 'products':
-                    break;
+                    return this.searchProduct(query);
             case 'categories':
-                break;
+                return this.searchCategory(query);
             default:
                 throw new InternalServerErrorException("There was a problem with the search");
         }
@@ -51,6 +55,28 @@ export class SearchService {
         
      }
 
+     async searchProduct(query:string){
+        const isQueryAMongoId = isValidObjectId(query);
+        if(isQueryAMongoId){
+            const product = await this.productService.getProductById(query);
+            return product;
+        }
+        const regExp = new RegExp(query,'i');
+        const product = await this.productRepository.find({name:regExp,status:true}).populate('category','name');
+        return product;
+     }
+
+     async searchCategory(query:string){
+        const isQueryAMongoId = isValidObjectId(query);
+        if(isQueryAMongoId){
+            const category = await this.categoryService.getCategoryById(query);
+            return category;
+        }
+
+        const regExp = new RegExp(query,'i');
+        const category = await this.categoryRepository.find({name:regExp,status:true});
+        return category;
+     }
 
 
 }
