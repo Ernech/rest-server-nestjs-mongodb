@@ -28,6 +28,13 @@ export class AuthService {
 
     }
 
+    async renewToken(headers: {authorization:any}){
+        const oldToken = headers.authorization;
+        const uid = this.tokenService.getUserID(oldToken);
+        const user = await this.userService.getUserByID(uid);
+        const token= this.tokenService.generateToken(user._id.toString(),user.role);
+        return {token};
 
+    }
 
 }

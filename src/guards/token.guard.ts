@@ -16,17 +16,19 @@ export class TokenGuard implements CanActivate {
     const authRequired = this.reflector.get<string[]>(
       'authorizationRequired',
       context.getHandler(),
-    );
+    ) ? false : true;
 
+    
+    
    const request = context.switchToHttp().getRequest()
    const authorizationHeader = request.headers.authorization;
-
    if(!authorizationHeader){
       if(!authRequired){
         return true;
       }
       throw new UnauthorizedException("You don't have permission to access to this resource")
    }
+
    const auth = authorizationHeader ? authorizationHeader.split(' ') : null;
    if(auth && auth.length===2 && auth[0] === 'bearer'){
       try {
