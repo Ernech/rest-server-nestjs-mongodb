@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Headers, Param, Post, Put, Query, Delete } from '@nestjs/common';
-import { Authroization } from 'src/decorators/auth.decorator';
+import { Authoization } from 'src/decorators/auth.decorator';
 import { Roles } from 'src/decorators/roles.decorator';
 import { CategoryDTO } from 'src/dto/category.dto';
 import { RoleType } from 'src/enums/role-type.enum';
@@ -16,7 +16,7 @@ export class CategoryController {
     }
 
     @Get()
-    @Authroization(false)
+    @Authoization(false)
     async getCategories(@Query('page') page:number=0, @Query('limit') limit:number=5){
         return this.categoryService.getAllCategories(page,limit);
     }
@@ -27,6 +27,7 @@ export class CategoryController {
     }
 
     @Delete('/:id')
+    @Roles(RoleType.ADMIN)
     async deleteCategory(@Param('id') id:string){
         return this.categoryService.deleteCategory(id);
     }

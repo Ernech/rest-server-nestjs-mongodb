@@ -2,7 +2,7 @@ import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from
 import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
 import { TokenService } from '../services/token/token.service';
-import { UserService } from 'src/services/user/user.service';
+
 @Injectable()
 export class TokenGuard implements CanActivate {
 
@@ -16,7 +16,7 @@ export class TokenGuard implements CanActivate {
     const authRequired = this.reflector.get<string[]>(
       'authorizationRequired',
       context.getHandler(),
-    ) ? false : true;
+    );
 
     
     

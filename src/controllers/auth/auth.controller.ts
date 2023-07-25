@@ -14,6 +14,7 @@ export class AuthController {
   }
 
   @Get()
+  @Authroization(true)
   async renewToken(@Headers() headers){
     return this.authService.renewToken(headers);
   }
