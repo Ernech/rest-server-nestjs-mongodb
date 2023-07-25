@@ -22,11 +22,13 @@ export class CategoryController {
     }
 
     @Put('/:id')
+    @Authoization(true)
     async updateCategory(@Param('id') id:string, @Body() categoryDTO:CategoryDTO, @Headers() headers){
         return this.categoryService.updateCategory(id,categoryDTO,headers);
     }
 
     @Delete('/:id')
+    @Authoization(true)
     @Roles(RoleType.ADMIN)
     async deleteCategory(@Param('id') id:string){
         return this.categoryService.deleteCategory(id);
