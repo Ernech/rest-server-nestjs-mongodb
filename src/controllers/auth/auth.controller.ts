@@ -1,5 +1,5 @@
 import { Body, Controller, Post, Get, Headers } from '@nestjs/common';
-import { Authroization } from 'src/decorators/auth.decorator';
+import { Authorization } from 'src/decorators/auth.decorator';
 import { LoginDTO } from 'src/dto/login.dto';
 import { AuthService } from 'src/services/auth/auth.service';
 
@@ -8,13 +8,13 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post()
-  @Authroization(false)
+  @Authorization(false)
   async loginUser(@Body() loginDTO: LoginDTO) {
     return this.authService.login(loginDTO);
   }
 
   @Get()
-  @Authroization(true)
+  @Authorization(true)
   async renewToken(@Headers() headers){
     return this.authService.renewToken(headers);
   }

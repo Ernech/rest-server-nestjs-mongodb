@@ -1,5 +1,5 @@
 import { SetMetadata } from "@nestjs/common";
 
 
-export const Authoization = (authorization:boolean)=>
+export const Authorization = (authorization:boolean)=>
      SetMetadata('authorizationRequired', authorization);
