@@ -11,9 +11,9 @@ export const uploadFile =(file:Express.Multer.File, validExtensions:string[]=['j
             return reject(`The extension ${extension} is not valid ${validExtensions}`);
         }
         const tempName:string = uuidv4() + "." +extension
-        const uploadPath = path.join(__dirname,'../files/'+folder+'/'+tempName);
-
-        fs.rename(file.path,uploadPath,(error)=>{
+        const basePath = process.env.NODE_ENV ==='production'?'dist':'src';
+        const uploadPath = path.join(__dirname,`../../${basePath}/files`,folder,'/',tempName);
+        fs.writeFile(uploadPath,file.buffer,(error)=>{
             if(error){
                 console.log(error);
                 return reject("There was an error when moving file");
