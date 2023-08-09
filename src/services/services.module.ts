@@ -21,6 +21,6 @@ import { UploadService } from './upload/upload.service';
     ]
     )],
   providers:[UserService, EncryptionService, TokenService, AuthService, CategoryService, ProductService, SearchService, UploadService],
-  exports:[UserService, AuthService, CategoryService, TokenService, ProductService, SearchService]
+  exports:[UserService, AuthService, CategoryService, TokenService, ProductService, SearchService, UploadService]
 })
 export class ServicesModule {}
