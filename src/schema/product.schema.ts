@@ -25,6 +25,9 @@ export class Product{
     @Prop({default:true})
     status:boolean;
 
+    @Prop()
+    img:string;
+
     @Prop({type:mongoose.Schema.Types.ObjectId, ref:'Category'})
     category:Category
 
