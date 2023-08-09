@@ -10,6 +10,7 @@ import { Category, CategorySchema } from 'src/schema/category.schema';
 import { ProductService } from './product/product.service';
 import { Product, ProductSchema } from 'src/schema/product.schema';
 import { SearchService } from './search/search.service';
+import { UploadService } from './upload/upload.service';
 
 @Module({
   imports:[MongooseModule.forFeature(
@@ -19,7 +20,7 @@ import { SearchService } from './search/search.service';
       {name:Product.name,schema:ProductSchema}
     ]
     )],
-  providers:[UserService, EncryptionService, TokenService, AuthService, CategoryService, ProductService, SearchService],
+  providers:[UserService, EncryptionService, TokenService, AuthService, CategoryService, ProductService, SearchService, UploadService],
   exports:[UserService, AuthService, CategoryService, TokenService, ProductService, SearchService]
 })
 export class ServicesModule {}
