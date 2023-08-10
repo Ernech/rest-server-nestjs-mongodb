@@ -31,8 +31,7 @@ export class UploadService {
                 
             
             case 'products':
-                fileName = await uploadFile(file,undefined,collection);
-                const updatedProduct= await this.producService.updateProductImage(fileName.toString(),id);
+                const updatedProduct= await this.producService.updateProductImage(file,id);
                 return updatedProduct;
                 
  

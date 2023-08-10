@@ -1,10 +1,13 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, UploadedFile } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ProductDTO } from 'src/dto/product.dto';
 import { Product } from 'src/schema/product.schema';
 import { TokenService } from '../token/token.service';
 import { UserService } from '../user/user.service';
+import fs from 'fs';
+import path from 'path';
+import { uploadFile } from 'src/helpers/uploadFile';
 
 @Injectable()
 export class ProductService {
@@ -48,9 +51,18 @@ export class ProductService {
         return product;
     }
 
-    async updateProductImage(fileName:string, id:string){
+    async updateProductImage(@UploadedFile() file: Express.Multer.File, id:string){
         const product = await this.getProductById(id);
-        product.img=fileName;
+        if(product.img){    
+            const basePath = process.env.NODE_ENV ==='production'?'dist':'src';
+            const pathImg = path.join(__dirname,`../../../${basePath}/files/products`,product.img);
+            if(fs.existsSync(pathImg)){
+                fs.unlinkSync(pathImg);
+            }
+        }
+        const fileName = await uploadFile(file,undefined,'products');
+        product.img=fileName.toString();
+        await product.save()
         return product;
     }    
 
