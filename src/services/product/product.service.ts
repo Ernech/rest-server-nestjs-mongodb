@@ -48,6 +48,10 @@ export class ProductService {
         return product;
     }
 
-    
+    async updateProductImage(fileName:string, id:string){
+        const product = await this.getProductById(id);
+        product.img=fileName;
+        return product;
+    }    
 
 }

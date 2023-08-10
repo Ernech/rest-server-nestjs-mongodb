@@ -22,16 +22,19 @@ export class UploadService {
 
     async updateImage(@UploadedFile() file:Express.Multer.File, collection:string, id:string){
 
-
+        let fileName:any;
         switch (collection) {
             case 'users':
-                const fileName = await uploadFile(file,undefined,collection);
+                fileName = await uploadFile(file,undefined,collection);
                 const updatedUser = await this.userService.updateUserImg(fileName.toString(),id);
                 return updatedUser;
                 
             
             case 'products':
-                break;
+                fileName = await uploadFile(file,undefined,collection);
+                const updatedProduct= await this.producService.updateProductImage(fileName.toString(),id);
+                return updatedProduct;
+                
  
             default:
                 throw new BadRequestException("Collection not found");
