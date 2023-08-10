@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, UploadedFile } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UserDTO } from 'src/dto/user.dto';
@@ -52,5 +52,11 @@ export class UserService {
         return deletedUser;
     }
 
+    async updateUserImg(fileName:string, id:string){
+        const user = await  this.getUserByID(id);
+        user.img=fileName;
+        user.save();
+        return user;
+    }
 
 }

@@ -1,8 +1,13 @@
 import { BadRequestException, Injectable, UploadedFile } from '@nestjs/common';
 import { uploadFile } from 'src/helpers/uploadFile';
+import { UserService } from '../user/user.service';
+import { ProductService } from '../product/product.service';
+import { UserDTO } from 'src/dto/user.dto';
 
 @Injectable()
 export class UploadService {
+
+    constructor(private userService:UserService, private producService:ProductService){}
 
     async uploadNewFile(@UploadedFile() file:Express.Multer.File){
         try {
@@ -12,6 +17,26 @@ export class UploadService {
             console.log(error);
             throw new BadRequestException("There was an error moving the file");
         }
+        
+    }
+
+    async updateImage(@UploadedFile() file:Express.Multer.File, collection:string, id:string){
+
+
+        switch (collection) {
+            case 'users':
+                const fileName = await uploadFile(file,undefined,collection);
+                const updatedUser = await this.userService.updateUserImg(fileName.toString(),id);
+                return updatedUser;
+                
+            
+            case 'products':
+                break;
+ 
+            default:
+                throw new BadRequestException("Collection not found");
+        }
+       
         
     }
 }
