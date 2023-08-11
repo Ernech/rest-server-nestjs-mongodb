@@ -4,6 +4,9 @@ import { Model } from 'mongoose';
 import { UserDTO } from 'src/dto/user.dto';
 import { User } from 'src/schema/user.schema';
 import { EncryptionService } from '../encryption/encryption.service';
+import { uploadFile } from 'src/helpers/uploadFile';
+import path from 'path';
+import fs from 'fs';
 
 @Injectable()
 export class UserService {
@@ -52,9 +55,17 @@ export class UserService {
         return deletedUser;
     }
 
-    async updateUserImg(fileName:string, id:string){
+    async updateUserImg(file:Express.Multer.File, id:string){
         const user = await  this.getUserByID(id);
-        user.img=fileName;
+       const fileName = await uploadFile(file,undefined,'users');
+        if(user.img){
+            const basePath = process.env.NODE_ENV ==='production'?'dist':'src';
+            const pathImg = path.join(__dirname,`../../../${basePath}/files/users`,user.img);
+            if(fs.existsSync(pathImg)){
+                fs.unlinkSync(pathImg);
+            }
+        }
+        user.img=fileName.toString();
         user.save();
         return user;
     }
