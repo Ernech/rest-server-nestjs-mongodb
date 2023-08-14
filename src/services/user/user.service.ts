@@ -7,7 +7,7 @@ import { EncryptionService } from '../encryption/encryption.service';
 import { uploadFile } from 'src/helpers/uploadFile';
 import path from 'path';
 import fs from 'fs';
-
+import { Response } from 'express';
 @Injectable()
 export class UserService {
 
@@ -55,6 +55,19 @@ export class UserService {
         return deletedUser;
     }
 
+    async getUserImg(id:string, res:Response){
+        const user:User = await this.getUserByID(id);
+        const basePath = process.env.NODE_ENV ==='production'?'dist':'src';
+        if(user.img){
+            const pathImg= path.join(__dirname,`../../../${basePath}/files/users`,user.img);
+            if(fs.existsSync(pathImg)){
+                return res.sendFile(pathImg);
+            }
+        }
+        const pathImgPlaceHolder= path.join(__dirname,`../../../${basePath}/assets`,'no-image.jpg');
+        return res.sendFile(pathImgPlaceHolder);
+        
+    }
     async updateUserImg(file:Express.Multer.File, id:string){
         const user = await  this.getUserByID(id);
        const fileName = await uploadFile(file,undefined,'users');

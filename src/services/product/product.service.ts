@@ -8,6 +8,7 @@ import { UserService } from '../user/user.service';
 import fs from 'fs';
 import path from 'path';
 import { uploadFile } from 'src/helpers/uploadFile';
+import { Response } from 'express';
 
 @Injectable()
 export class ProductService {
@@ -49,6 +50,20 @@ export class ProductService {
     async deleteProduct(productId:string){
         const product = await this.productRepository.findByIdAndUpdate(productId,{status:false},{new:true})
         return product;
+    }
+
+    async getProductImg(id:string, res:Response){
+        const product:Product = await this.getProductById(id);
+        const basePath = process.env.NODE_ENV ==='production'?'dist':'src';
+        if(product.img){
+            const pathImg= path.join(__dirname,`../../../${basePath}/files/products`,product.img);
+            if(fs.existsSync(pathImg)){
+                return res.sendFile(pathImg);
+            }
+        }
+        const pathImgPlaceHolder= path.join(__dirname,`../../../${basePath}/assets`,'no-image.jpg');
+        return res.sendFile(pathImgPlaceHolder);
+        
     }
 
     async updateProductImage(@UploadedFile() file: Express.Multer.File, id:string){

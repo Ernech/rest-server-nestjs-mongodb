@@ -2,8 +2,7 @@ import { BadRequestException, Injectable, UploadedFile } from '@nestjs/common';
 import { uploadFile } from 'src/helpers/uploadFile';
 import { UserService } from '../user/user.service';
 import { ProductService } from '../product/product.service';
-import { UserDTO } from 'src/dto/user.dto';
-
+import { Response } from 'express';
 @Injectable()
 export class UploadService {
 
@@ -19,6 +18,18 @@ export class UploadService {
         }
         
     }
+
+    async getImage(collection:string, id:string, res:Response){
+     
+        switch (collection) {
+            case 'users':
+                return this.userService.getUserImg(id,res);
+            case 'products':
+                return this.producService.getProductImg(id,res);
+            default:
+                throw new BadRequestException("Collection not found");
+        }
+    }   
 
     async updateImage(@UploadedFile() file:Express.Multer.File, collection:string, id:string){
 
