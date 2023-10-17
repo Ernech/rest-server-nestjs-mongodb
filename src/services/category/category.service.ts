@@ -10,14 +10,12 @@ import { UserService } from '../user/user.service';
 export class CategoryService {
 
     constructor(@InjectModel(Category.name) private categoryModel: Model<Category>,
-        private tokenService: TokenService,
         private userService: UserService) { }
 
 
-    async createCategory(categoryDTO: CategoryDTO, headers: { authorization: any; }) {
-        const token = headers.authorization;
-        const uid = this.tokenService.getUserID(token);
-        const user = await this.userService.getUserByID(uid);
+    async createCategory(categoryDTO: CategoryDTO, uiserId:string) {
+        
+        const user = await this.userService.getUserByID(uiserId);
         const newCategory = await this.categoryModel.create({ ...categoryDTO, user: user._id });
         return await newCategory.save()
     }
@@ -35,10 +33,8 @@ export class CategoryService {
     }
 
 
-    async updateCategory(categoryId:string, categoryDTO:CategoryDTO,headers:{authorization:any}){
-        const token = headers.authorization;
-        const uid = this.tokenService.getUserID(token);
-        const user = await this.userService.getUserByID(uid);
+    async updateCategory(categoryId:string, categoryDTO:CategoryDTO,userId:string){
+        const user = await this.userService.getUserByID(userId);
         const newCategory= await this.categoryModel.findByIdAndUpdate(categoryId,{...categoryDTO, user:user._id},{new:true});
         if(!newCategory){
             throw new BadRequestException(`The category with the id ${categoryId} does not exists`)

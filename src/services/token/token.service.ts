@@ -26,6 +26,7 @@ export class TokenService {
         return id;
     }
     validateToken(token:string){
+       
         return jwt.verify(token, process.env.PRIVATE_KEY)
     }
     

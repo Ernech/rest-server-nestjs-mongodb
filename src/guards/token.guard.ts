@@ -2,7 +2,6 @@ import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from
 import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
 import { TokenService } from '../services/token/token.service';
-
 @Injectable()
 export class TokenGuard implements CanActivate {
 
@@ -34,6 +33,7 @@ export class TokenGuard implements CanActivate {
       try {
         const validateToken = this.tokenService.validateToken(auth[1])
         if(validateToken){
+          request['userId'] = validateToken.id;          
           return true;
         }
       } catch (error) {

@@ -30,18 +30,14 @@ export class ProductService {
         return prodcuts;
     }
 
-    async createProduct(productDTO:ProductDTO, headers: { authorization: any; }){
-        const token = headers.authorization;
-        const uid = this.tokenService.getUserID(token);
-        const user = await this.userService.getUserByID(uid);
+    async createProduct(productDTO:ProductDTO, userId:string){
+        const user = await this.userService.getUserByID(userId);
         const newProduct = await this.productRepository.create({...productDTO,user:user._id});
         return await newProduct.save();
     }
 
-    async updateProduct(productId:string, productDTO:ProductDTO,headers:{authorization:any}){
-        const token = headers.authorization;
-        const uid = this.tokenService.getUserID(token);
-        const user = await this.userService.getUserByID(uid);
+    async updateProduct(productId:string, productDTO:ProductDTO,userId:string){
+        const user = await this.userService.getUserByID(userId);
         const updatedCategory = await this.productRepository.findByIdAndUpdate(productId,{...productDTO,user:user._id},{new:true});
         if(!updatedCategory) throw new BadRequestException(`The product with the id: ${productId} doesn't exists`);
         return updatedCategory;

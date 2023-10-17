@@ -1,4 +1,4 @@
-import { Body, Controller, Headers, Post, Get, Delete,Param, Query, Put } from '@nestjs/common';
+import { Body, Controller, Headers, Post, Get, Delete,Param, Query, Put, Request } from '@nestjs/common';
 import { Authorization } from 'src/decorators/auth.decorator';
 import { Roles } from 'src/decorators/roles.decorator';
 import { ProductDTO } from 'src/dto/product.dto';
@@ -19,14 +19,14 @@ export class ProductController {
 
     @Post()
     @Authorization(true)
-    async createNewProduct(@Body() productDTO:ProductDTO,@Headers() headers){
-        return await this.productService.createProduct(productDTO, headers);
+    async createNewProduct(@Body() productDTO:ProductDTO, @Request() req:any){
+        return await this.productService.createProduct(productDTO, req.userId);
     }
 
     @Put('/:id')
     @Authorization(true)
-    async updateProduct(@Param('id') id:string, @Body() productDTO:ProductDTO, @Headers() headers){
-        return await this.productService.updateProduct(id,productDTO,headers);
+    async updateProduct(@Param('id') id:string, @Body() productDTO:ProductDTO, @Request() req:any){
+        return await this.productService.updateProduct(id,productDTO,req.userId);
     }
 
     @Delete('/:id')
